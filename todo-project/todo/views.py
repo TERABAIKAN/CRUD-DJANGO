@@ -6,9 +6,23 @@ from django.contrib import messages
 from .models import Task
 # import class TaskForm dari file todo/forms.py
 from .forms import TaskForm
+from django.views import View
+from django.shortcuts import render
+from django.contrib.auth.views import LoginView, LogoutView
 
 
-# Membuat View untuk halaman daftar task
+class CustomLoginView(LoginView):
+	
+    template_name = 'accounts/login.html';
+	
+redirect_authenticated_user = True
+
+
+class HomeView(View):
+    template_name = 'accounts/home.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
 def index_view(request):
     # Mengambil semua data task
     tasks = Task.objects.all()
@@ -99,3 +113,18 @@ def delete_view(request, task_id):
         # maka akan di redirect ke halaman 404 (Page not found).
         raise Http404("Task tidak ditemukan.")
 
+
+class CustomLoginView(LoginView):
+    
+ template_name = 'accounts/login.html';
+	
+ redirect_authenticated_user = True
+
+class CustomLogoutView(LogoutView):
+    template_name = 'accounts/login.html'
+    next_page = 'login'
+class HomeView(View):
+    template_name = 'accounts/home.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
